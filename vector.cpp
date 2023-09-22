@@ -3,7 +3,9 @@
 template <class T>
 Vector<T>::Vector()
 {
-
+    size = 0;
+    capacity = 10;
+    internalArr = new T[capacity]{};
 }
 
 //Удаляет вектор и переносит его элементы в новый вектор
@@ -28,19 +30,21 @@ T& Vector<T>::Back(){
 //без повторного выделения памяти
 template <class T>
 int Vector<T>::Capacity(){
-
+    return capacity;
 }
 
 //Очищает вектор
 template <class T>
 void Vector<T>::Clear(){
-
+    size = 0;
+    capacity = 10;
+    internalArr = new T[capacity]{};
 }
 
 //Проверяет пуст ли вектор
 template <class T>
 bool Vector<T>::Empty(){
-
+    return size == 0 ? true : false;
 }
 
 //Возвращает первый элемент вектора
@@ -94,6 +98,6 @@ void Vector<T>::PushFront(T const & value){
 //Возвращает количество элементов в векторе
 template <class T>
 int Vector<T>::Size(){
-
+    return size;
 }
 

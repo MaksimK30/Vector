@@ -26,7 +26,7 @@ public:
 private:
     int capacity;
     int size;
-    T InternalArr[];
+    T internalArr[];
 };
 
 #endif // VECTOR_H
