@@ -49,8 +49,8 @@ public:
     }
 
     //Возвращает первый элемент вектора
-    T& Front(){
-
+    T* Front(){
+        return size == 0 ? nullptr : &internalArr[0];
     }
 
     //Вставляет элемент в указанную позицию
