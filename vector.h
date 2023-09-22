@@ -1,6 +1,7 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+#include <stdexcept>
 template <class T>
 class Vector
 {
@@ -73,10 +74,16 @@ public:
 
     }
 
-    //Удаляет элементы в указанном диапазоне(включительно)
+    //Удаляет последний элемент вектора и возвращает его
     T PopBack(){
-
+        return size == 0 ? throw std::out_of_range("Index out of range") : internalArr[size - 1];
     }
+
+    //Удаляет первый элемент вектора и возвращает его
+    T PopFront(){
+        return size == 0 ? throw std::out_of_range("Index out of range") : internalArr[0];
+    }
+
 
     //Вставляет элемент в конец
     void PushBack(T const value){
