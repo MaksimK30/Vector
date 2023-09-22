@@ -13,8 +13,9 @@ int main()
     v.PushFront(1);
 
     for(int i = 0; i < v.Size(); i++){
-        cout << *v.At(i) << endl;
+        //cout << v.Back() << endl;
     }
+    cout << v.Back() << endl;
 
     return 0;
 }
