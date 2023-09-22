@@ -17,7 +17,11 @@ void Vector<T>::Assign(Vector<T> const & newVector){
 //Возвращает ссылку на элемент в выбранной позиции
 template <class T>
 T& Vector<T>::At(int const position){
+    if(position < 0 || position > size - 1){
+        return -1;
+    }
 
+    return internalArr[position];
 }
 
 //Возвращает ссылку на последний элемент
