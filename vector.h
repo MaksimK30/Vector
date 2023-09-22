@@ -81,13 +81,21 @@ public:
     //Вставляет элемент в конец
     void PushBack(T const value){
         CheckCapacity(size + 1);
-        internalArr[size == 0 ? 0 : size + 1] = value;
+        internalArr[size == 0 ? 0 : size] = value;
         size++;
     }
 
     //Вставляет элемент в начало
     void PushFront(T const value){
 
+        if (size != 0){
+            CheckCapacity(size + 1);
+            for(int i = size - 1; i >= 0; i--){
+                internalArr[i + 1] = internalArr[i];
+            }
+        }
+        internalArr[0] = value;
+        size++;
     }
 
     //Возвращает количество элементов в векторе
