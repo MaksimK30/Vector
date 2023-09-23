@@ -15,7 +15,7 @@ public:
     }
 
     //Удаляет вектор и переносит его элементы в новый вектор
-    void Assign(const Vector<T> * newVector){
+    void Assign(Vector<T> * const newVector){
         if(size == 0){
             return;
         }
@@ -26,14 +26,16 @@ public:
     }
 
     //Удаляет вектор и переносит его элементы в новый вектор, начиная с определённого индекса
-    void Assign(const Vector<T> * newVector, int start){
+    void Assign(Vector<T> * const newVector, const int start){
         if(size == 0){
             return;
         }
 
-        for(int i = 0; i < size; i++){
-            newVector->PushBack(internalArr[i]);
+        if(start >= size - 1 || start < 0){
+            throw std::out_of_range("Index out of range");
         }
+
+        newVector->InsertArray(start, internalArr, size);
     }
 
     //Возвращает указатель на элемент в выбранной позиции
@@ -98,13 +100,28 @@ public:
     }
 
     //Удаляет элемент в указанной позиции
-    void Erase(int const position){
-
+    void Erase(const int index){
+        if(size <= index || index < 0){
+            throw std::out_of_range("Index out or range");
+        }
+        for(int i = index; i < size - 1; i++){
+            internalArr[i] = internalArr[i + 1];
+        }
+        size--;
     }
 
     //Удаляет элементы, начиная с указанной позиции
-    void Erase(int const start, int const end){
+    void Erase(const int start, const int end){
+        if(size <= end || start < 0){
+            throw std::out_of_range("Index out or range");
+        }else if(start >= end){
+            throw "Start index must be bigger, than end index";
+        }
 
+        for(int i = start, j = end; i < end; i++, j++){
+            internalArr[i] = internalArr[j + 1];
+        }
+        size -= end - start + 1;
     }
 
     //Удаляет последний элемент вектора и возвращает его
@@ -117,16 +134,15 @@ public:
         return size == 0 ? throw std::out_of_range("Index out of range") : internalArr[0];
     }
 
-
     //Вставляет элемент в конец
-    void PushBack(T const value){
+    void PushBack(const T value){
         CheckCapacity(size + 1);
         internalArr[size == 0 ? 0 : size] = value;
         size++;
     }
 
     //Вставляет элемент в начало
-    void PushFront(T const value){
+    void PushFront(const T value){
 
         if (size != 0){
             CheckCapacity(size + 1);
@@ -141,7 +157,6 @@ public:
     int Size(){
         return size;
     }
-
 
 private:
     int capacity;
