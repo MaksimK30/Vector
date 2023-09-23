@@ -2,6 +2,8 @@
 #define VECTOR_H
 
 #include <stdexcept>
+#include <iostream>
+
 template <class T>
 class Vector
 {
@@ -13,12 +15,29 @@ public:
     }
 
     //Удаляет вектор и переносит его элементы в новый вектор
-    void Assign(Vector<T> const & newVector){
+    void Assign(const Vector<T> * newVector){
+        if(size == 0){
+            return;
+        }
 
+        for(int i = 0; i < size; i++){
+            newVector->PushBack(internalArr[i]);
+        }
+    }
+
+    //Удаляет вектор и переносит его элементы в новый вектор, начиная с определённого индекса
+    void Assign(const Vector<T> * newVector, int start){
+        if(size == 0){
+            return;
+        }
+
+        for(int i = 0; i < size; i++){
+            newVector->PushBack(internalArr[i]);
+        }
     }
 
     //Возвращает указатель на элемент в выбранной позиции
-    T* At(int const position){
+    T* At(const int position){
         if(position < 0 || position > size - 1){
             return nullptr;
         }
@@ -32,7 +51,6 @@ public:
     }
 
     //Возвращает количество элементов, которое может быть добавлено//без повторного выделения памяти
-
     int Capacity(){
         return capacity;
     }
@@ -40,7 +58,6 @@ public:
     //Очищает вектор
     void Clear(){
         size = 0;
-        capacity = 10;
         internalArr = new T[capacity]{};
     }
 
@@ -55,13 +72,29 @@ public:
     }
 
     //Вставляет элемент в указанную позицию
-    void Insert(int const position, T const value){
-
+    void Insert(const int index, const T value){
+        if(index < 0){
+            throw std::out_of_range("Index out of range");
+        }
+        CheckCapacity(index);
+        if(size < index){
+            size = index + 1;
+        }
+        internalArr[index] = value;
     }
 
     //Вставляет элементы, начиная с указанной позиции
-    void Insert(int const position, T const * values[]){
+    void InsertArray(const int index, T * const values, const int arrSize){
+        int lastIndex = index + arrSize;
+        CheckCapacity(lastIndex);
 
+        for(int i = index, j = 0; i <= lastIndex; i++, j++){
+            internalArr[i] = values[j];
+        }
+
+        if(size < lastIndex){
+            size = lastIndex;
+        }
     }
 
     //Удаляет элемент в указанной позиции
@@ -118,7 +151,7 @@ private:
     //Расширяет вектор при необходимости
     void CheckCapacity(int newSize){
         if(capacity < newSize){
-            capacity = static_cast<int>(capacity * 1.5);
+            capacity = static_cast<int>(newSize * 1.5);
         }
     }
 };
