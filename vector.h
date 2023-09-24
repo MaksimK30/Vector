@@ -2,7 +2,6 @@
 #define VECTOR_H
 
 #include <stdexcept>
-#include <iostream>
 
 template <class T>
 class Vector
@@ -60,6 +59,7 @@ public:
     //Очищает вектор
     void Clear(){
         size = 0;
+        delete [] internalArr;
         internalArr = new T[capacity]{};
     }
 
@@ -75,7 +75,7 @@ public:
 
     //Вставляет элемент в указанную позицию
     void Insert(const int index, const T value){
-        if(index < 0){
+        if(index < 0 || index > size - 1){
             throw std::out_of_range("Index out of range");
         }
         CheckCapacity(index);
@@ -151,11 +151,16 @@ public:
             }
         }
         internalArr[0] = value;
-        size++;}
+        size++;
+    }
 
     //Возвращает количество элементов в векторе
     int Size(){
         return size;
+    }
+
+    ~Vector(){
+        delete [] internalArr;
     }
 
 private:
@@ -167,6 +172,13 @@ private:
     void CheckCapacity(int newSize){
         if(capacity < newSize){
             capacity = static_cast<int>(newSize * 1.5);
+
+            T * newArr = new T[capacity]{};
+            for(int i = 0; i < size; i++){
+                newArr[i] = internalArr[i];
+            }
+            delete [] internalArr;
+            internalArr = newArr;
         }
     }
 };
