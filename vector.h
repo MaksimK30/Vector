@@ -14,7 +14,7 @@ public:
     }
 
     //Удаляет вектор и переносит его элементы в новый вектор
-    void Assign(Vector<T> * const newVector){
+    void Assign(Vector<T> *newVector){
         if(size == 0){
             return;
         }
@@ -25,7 +25,7 @@ public:
     }
 
     //Удаляет вектор и переносит его элементы в новый вектор, начиная с определённого индекса
-    void Assign(Vector<T> * const newVector, const int start){
+    void Assign(Vector<T> *newVector, int start){
         if(size == 0){
             return;
         }
@@ -37,18 +37,18 @@ public:
         newVector->InsertArray(start, internalArr, size);
     }
 
-    //Возвращает указатель на элемент в выбранной позиции
-    T* At(const int position){
+    //Возвращает элемент в выбранной позиции
+    T At(int position){
         if(position < 0 || position > size - 1){
-            return nullptr;
+            throw std::out_of_range("Index out of range");
         }
 
-        return &internalArr[position];
+        return internalArr[position];
     }
 
-    //Возвращает указатель на последний элемент
-    T* Back(){
-        return size == 0 ? internalArr : &internalArr[size - 1];
+    //Возвращает последний элемент
+    T Back(){
+        return size == 0 ? internalArr : internalArr[size - 1];
     }
 
     //Возвращает количество элементов, которое может быть добавлено без повторного выделения памяти
@@ -65,16 +65,16 @@ public:
 
     //Проверяет пуст ли вектор
     bool Empty(){
-        return size == 0 ? true : false;
+        return size == 0;
     }
 
     //Возвращает первый элемент вектора
-    T* Front(){
-        return size == 0 ? nullptr : internalArr;
+    T Front(){
+        return size == 0 ? nullptr : internalArr[0];
     }
 
     //Вставляет элемент по указанному индексу
-    void Insert(const int index, const T value){
+    void Insert(int index, T value){
 
         if(index < 0 || index > size - 1){
             throw std::out_of_range("Index out of range");
@@ -90,7 +90,7 @@ public:
     }
 
     //Вставляет элементы, начиная с указанного индекса
-    void InsertArray(const int index, T * const values, const int arrSize){
+    void InsertArray(int index, T *values, int arrSize){
         int lastIndex = index + arrSize;
 
         CheckCapacity(lastIndex);
@@ -105,7 +105,7 @@ public:
     }
 
     //Удаляет элемент по указанному индексу
-    void Erase(const int index){
+    void Erase(int index){
 
         if(size <= index || index < 0){
             throw std::out_of_range("Index out or range");
@@ -119,7 +119,7 @@ public:
     }
 
     //Удаляет элементы, начиная с указанного индекса
-    void Erase(const int start, const int end){
+    void Erase(int start, int end){
 
         if(size <= end || start < 0){
             throw std::out_of_range("Index out or range");
@@ -137,15 +137,17 @@ public:
     //Удаляет последний элемент вектора и возвращает его
     T PopBack(){
         return size == 0 ? throw std::out_of_range("Index out of range") : internalArr[size - 1];
+        size--;
     }
 
     //Удаляет первый элемент вектора и возвращает его
     T PopFront(){
         return size == 0 ? throw std::out_of_range("Index out of range") : internalArr[0];
+        size--;
     }
 
     //Вставляет элемент в конец
-    void PushBack(const T value){
+    void PushBack(T value){
         CheckCapacity(size + 1);
 
         internalArr[size] = value;
@@ -153,7 +155,7 @@ public:
     }
 
     //Вставляет элемент в начало
-    void PushFront(const T value){
+    void PushFront(T value){
 
         if (size != 0){            
             CheckCapacity(size + 1);
@@ -172,9 +174,10 @@ public:
         return size;
     }
 
+    //Сократить размер выделенной памяти под количество элементов
     void ShrinkToFit(){
         capacity = size;
-        T * newArr = new T[capacity]{};
+        T *newArr = new T[capacity]{};
 
         for(int i = 0; i < size; i++){
             newArr[i] = internalArr[i];
@@ -198,7 +201,7 @@ private:
         if(capacity < newSize){
             capacity = static_cast<int>(newSize * 1.5);
 
-            T * newArr = new T[capacity]{};
+            T *newArr = new T[capacity]{};
 
             for(int i = 0; i < size; i++){
                 newArr[i] = internalArr[i];
