@@ -6,16 +6,17 @@ using namespace std;
 int main()
 {
     Vector<int> v;
-    v.PushFront(4);
-    v.PushFront(3);
-    v.PushBack(5);
-    v.PushFront(2);
-    v.PushFront(1);
+    cout << v.Back() << endl;
+    for(int i = 0; i < 20; i++){
+        v.PushBack(i + 1);
+    }
 
     for(int i = 0; i < v.Size(); i++){
-        //cout << v.Back() << endl;
+        cout << *v.At(i) << " idx = " << i << endl;
     }
-    cout << v.Back() << endl;
+
+    cout << v.Size() << endl << v.Capacity() << endl;
+    cout << *v.Front() << endl;
 
     return 0;
 }
